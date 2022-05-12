@@ -1,6 +1,27 @@
 const mysqlConnection = require('../dbconnection');
 
 module.exports = {
+    signupuser: (newuser, result) => {
+        mysqlConnection.query('INSERT INTO user SET ?', newuser, (err, rows, fields) => {
+            if (!err) {
+                result("new user added succesfully");
+            }
+            else {
+                result(err);
+            }
+        })
+    },
+    loginuser: (email, password, result) => {
+        console.log(email+' '+password);
+        mysqlConnection.query('SELECT * FROM user WHERE email = ? AND password = ?', email, password, (err, rows, fields) => {
+            if (!err) {
+                result(rows);
+            }
+            else {
+                result(err);
+            }
+        })
+    },
     fetchAll: (result) => {
         mysqlConnection.query('SELECT * FROM blog', (err, rows, fields) => {
             if (!err) {

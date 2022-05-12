@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <title>Blog</title>
+</head>
+
+<body>
+    <%- include('header'); %>
+
+    <div class="login-form">
+        <div class="login-header">
+            <h2>Login</h2>
+        </div>
+        <form method="post" action="/loginuser">
+            <div class="login-fields flex">
+                <input class="input" type="email" name="email" id="email" required placeholder="enter your email.." autocomplete="off">
+                <input class="input" type="password" name="password" id="password" required placeholder="enter your password.." autocomplete="off">
+            </div>
+            <div class="login-button">
+                <button type="submit" class="btn-login">Login</button>
+            </div>
+        </form>
+        <div class="register">
+            Didn't have an account? <a class="register-text" href="/signup">Click here to register</a>
+        </div>
+    </div>
+
+    <%- include('footer'); %>
+</body>
+
+</html>
