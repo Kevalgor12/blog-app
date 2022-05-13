@@ -1,4 +1,6 @@
-const blogcrudmodel = require('../models/blogcrudmodel');
+// using sequelize
+
+const blogmodel = require('../models/blogmodel');
 
 module.exports = {
     welcomemessage: (req, res) => {
@@ -10,62 +12,81 @@ module.exports = {
     signup: (req, res) => {
         res.render('signup');
     },
-    signupuser: (req, res) => {
-        let newuser = {
-            username: req.body.username,
-            email: req.body.email,
-            mobile: req.body.mobile,
-            password: req.body.password
-        };
-        blogcrudmodel.signupuser(newuser, (result) => {
-            res.send(result);
-        })
-    },
-    loginuser: (req, res) => {
-        blogcrudmodel.loginuser(req.body.email, req.body.password, (result) => {
-            res.send(result);
-        })
-    },
+    // signupuser: (req, res) => {
+    //     let newuser = {
+    //         username: req.body.username,
+    //         email: req.body.email,
+    //         mobile: req.body.mobile,
+    //         password: req.body.password
+    //     };
+    //     blogcrudmodel.signupuser(newuser, (result) => {
+    //         res.send(result);
+    //     })
+    // },
+    // loginuser: (req, res) => {
+    //     blogcrudmodel.loginuser(req.body.email, req.body.password, (result) => {
+    //         res.send(result);
+    //     })
+    // },
     fetchAll: (req, res) => {
-        blogcrudmodel.fetchAll((result) => {
+        blogmodel.findAll().then((result) => {
             res.send(result);
-        })
-    },
-    fetchparticular: (req, res) => {
-        blogcrudmodel.fetchparticular(req.params.blogid, (result) => {
-            res.send(result);
+        }).catch((err) => {
+            if (err) {
+                res.send('Error');
+            }
         });
     },
-    deleteParticular: (req, res) => {
-        blogcrudmodel.deleteparticular(req.params.blogid, (result) => {
+    fetchparticular: (req, res) => {
+        blogmodel.findAll({ where: { blogId: req.params.blogid } }).then((result) => {
             res.send(result);
+        }).catch((err) => {
+            if (err) {
+                res.send('Error');
+            }
+        });
+    },
+    deleteparticular: (req, res) => {
+        blogmodel.destroy({ where: { blogId: req.params.blogid } }).then((result) => {
+            res.send(`${req.params.blogid} deleted successfully.`);
+        }).catch((err) => {
+            if (err) {
+                res.send('Error');
+            }
         });
     },
     insert: (req, res) => {
-        let newblog = {
+        // console.log(req.file);
+        blogmodel.create({
             title: req.body.title,
             imagepath: req.file.path,
             description: req.body.description,
             publisheddate: req.body.publisheddate,
             author: req.body.author
-        };
-        blogcrudmodel.insert(newblog, (result) => {
-            // console.log(req.file);
-            res.send(result);
-            // res.status(200).json(result);
-        })
+        }).then(() => {
+            res.send('inserted successfully.');
+        }).catch((err) => {
+            if (err) {
+                res.send('Error');
+            }
+        });
     },
     updateparticular: (req, res) => {
-        let newblog = [
-            req.body.title,
-            req.file.path,
-            req.body.description,
-            req.body.publisheddate,
-            req.body.author,
-            req.params.blogid
-        ];
-        blogcrudmodel.updateparticular(newblog, (result) => {
-            res.send(result);
-        })
+        blogmodel.update({
+                title: req.body.title,
+                imagepath: req.file.path,
+                description: req.body.description,
+                publisheddate: req.body.publisheddate,
+                author: req.body.author
+            },
+            {
+                where: { blogId: req.params.blogid }
+            }).then(() => {
+                res.send(`${req.params.blogid} updated successfully.`);
+            }).catch((err) => {
+                if (err) {
+                    res.send('Error');
+                }
+            });
     }
 }

@@ -38,11 +38,11 @@ router.get('/login', blogcrudcontroller.login);
 /* GET signup page. */
 router.get('/signup', blogcrudcontroller.signup);
 
-/* insert new user. */
-router.post('/signupuser', blogcrudcontroller.signupuser);
+// /* insert new user. */
+// router.post('/signupuser', blogcrudcontroller.signupuser);
 
-/* login user. */
-router.get('/loginuser', blogcrudcontroller.loginuser);
+// /* login user. */
+// router.get('/loginuser', blogcrudcontroller.loginuser);
 
 /* GET all data. */
 router.get('/blogs', blogcrudcontroller.fetchAll);
@@ -51,7 +51,7 @@ router.get('/blogs', blogcrudcontroller.fetchAll);
 router.get('/blogs/:blogid', blogcrudcontroller.fetchparticular);
 
 /* delete particular data. */
-router.delete('/delete/:blogid', blogcrudcontroller.deleteParticular);
+router.delete('/delete/:blogid', blogcrudcontroller.deleteparticular);
 
 /* insert data. */
 router.post('/insert', upload.single('imagepath'), blogcrudcontroller.insert);
