@@ -38,11 +38,11 @@ router.get('/login', blogcrudcontroller.login);
 /* GET signup page. */
 router.get('/signup', blogcrudcontroller.signup);
 
-// /* insert new user. */
-// router.post('/signupuser', blogcrudcontroller.signupuser);
+/* insert new user. */
+router.post('/signupuser', blogcrudcontroller.signupuser);
 
-// /* login user. */
-// router.get('/loginuser', blogcrudcontroller.loginuser);
+/* login user. */
+router.post('/loginuser', blogcrudcontroller.loginuser);
 
 /* GET all data. */
 router.get('/blogs', blogcrudcontroller.fetchAll);
