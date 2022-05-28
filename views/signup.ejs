@@ -12,27 +12,31 @@
 <body>
     <%- include('header'); %>
 
-    <div class="login-form">
-        <div class="login-header">
-            <h2>Sign Up</h2>
-        </div>
-        <form method="POST" action="/signupuser">
-            <div class="login-fields flex">
-                <input class="input" type="text" name="username" id="username" required placeholder="enter your name.." autocomplete="off">
-                <input class="input" type="email" name="email" id="email" required placeholder="enter your email.." autocomplete="off">
-                <input class="input" type="text" name="mobile" id="mobile" required placeholder="enter your mobile number.." autocomplete="off">
-                <input class="input" type="password" name="password" id="password" required placeholder="enter your password.." autocomplete="off">
+        <div class="login-form">
+            <div class="login-header">
+                <h2>Sign Up</h2>
             </div>
-            <div class="login-button">
-                <button type="submit" class="btn-login">signup</button>
+            <form method="POST" action="/users/signupuser">
+                <div class="login-fields flex">
+                    <input class="input" type="text" name="username" id="username" required
+                        placeholder="enter your name.." autocomplete="off">
+                    <input class="input" type="email" name="email" id="email" required placeholder="enter your email.."
+                        autocomplete="off">
+                    <input class="input" type="text" name="mobile" id="mobile" required
+                        placeholder="enter your mobile number.." autocomplete="off">
+                    <input class="input" type="password" name="password" id="password" required
+                        placeholder="enter your password.." autocomplete="off">
+                </div>
+                <div class="login-button">
+                    <button type="submit" class="btn-login">signup</button>
+                </div>
+            </form>
+            <div class="register">
+                <a class="register-text" href="/users/login">Click here to login</a>
             </div>
-        </form>
-        <div class="register">
-            <a class="register-text" href="/login">Click here to login</a>
         </div>
-    </div>
 
-    <%- include('footer'); %>
+        <%- include('footer'); %>
 </body>
 
 </html>

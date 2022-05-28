@@ -1,7 +1,8 @@
 var express = require('express');
 const blogcrudcontroller = require('../controllers/blogcrudcontroller');
+const multer = require('multer');
+const { checkToken } = require('./middleware/authentication');
 var router = express.Router();
-let multer = require('multer');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './public/files')
@@ -12,13 +13,18 @@ const storage = multer.diskStorage({
     }
 });
 
+const allowMimeType = [
+    'image/jpeg',
+    'image/jpg',
+    'image/png'
+]
+
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'image/png') {
-        cb(null, true);
+    let isValid = false;
+    if (allowMimeType.includes(file.mimetype) > -1) {
+        isValid = true;
     }
-    else {
-        cb(null, false);
-    }
+    cb(null, isValid);
 }
 
 let upload = multer({
@@ -32,31 +38,24 @@ let upload = multer({
 /* GET home page. */
 router.get('/', blogcrudcontroller.welcomemessage);
 
-/* GET login page. */
-router.get('/login', blogcrudcontroller.login);
-
-/* GET signup page. */
-router.get('/signup', blogcrudcontroller.signup);
-
-/* insert new user. */
-router.post('/signupuser', blogcrudcontroller.signupuser);
-
-/* login user. */
-router.post('/loginuser', blogcrudcontroller.loginuser);
-
 /* GET all data. */
-router.get('/blogs', blogcrudcontroller.fetchAll);
+router.get('/blogs', checkToken, blogcrudcontroller.fetchAll);
+
+/* GET blog.ejs page. */
+router.get('/userblog', checkToken, (req,res) => {
+    res.render('blog');
+});
 
 /* GET particular data. */
-router.get('/blogs/:blogid', blogcrudcontroller.fetchparticular);
+router.get('/blogs/:blogid', checkToken, blogcrudcontroller.fetchparticular);
 
 /* delete particular data. */
-router.delete('/delete/:blogid', blogcrudcontroller.deleteparticular);
+router.delete('/delete/:blogid', checkToken, blogcrudcontroller.deleteparticular);
 
 /* insert data. */
-router.post('/insert', upload.single('imagepath'), blogcrudcontroller.insert);
+router.post('/insert', upload.single('imagepath'), checkToken, blogcrudcontroller.insert);
 
 /* update particular data. */
-router.put('/update/:blogid', upload.single('imagepath'), blogcrudcontroller.updateparticular);
+router.put('/update/:blogid', upload.single('imagepath'), checkToken, blogcrudcontroller.updateparticular);
 
 module.exports = router;
