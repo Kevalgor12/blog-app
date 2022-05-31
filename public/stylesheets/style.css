@@ -52,12 +52,14 @@
     max-width: 400px;
     margin: 90px auto;
     padding: 20px 20px;
-    background-color: rgb(210, 205, 177);
+    background-color: rgb(255, 255, 255);
     border: none;
     border-radius: 3px;
-    box-shadow: rgb(178, 185, 124) 0px 5px 15px 0px;
+    box-shadow: rgb(178, 185, 124) 0px 1px 5px 0px;
 }
 .login-form:hover {
+    background-color: rgb(253, 251, 251);
+    box-shadow: rgb(178, 185, 124) 0px 5px 15px 0px;
     transform: scale(1.005);
 }
 .login-form .login-header {

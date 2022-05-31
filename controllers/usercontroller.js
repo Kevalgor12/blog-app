@@ -1,53 +1,67 @@
-const usermodel = require('../models/usermodel');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+// using sequelize
+const blogmodel = require('../models/blogmodel');
 
 module.exports = {
-    login: (req, res) => {
-        res.render('login');
+    welcomemessage: (req, res) => {
+        res.render('welcome');
     },
-    signup: (req, res) => {
-        res.render('signup');
-    },
-    signupuser: (req, res) => {
-        const salt = bcrypt.genSaltSync(10);
-        const password = bcrypt.hashSync(req.body.password, salt);
-        usermodel.create({
-            username: req.body.username,
-            email: req.body.email.toLowerCase(),
-            mobile: req.body.mobile,
-            password: password
-        }).then(() => {
-            res.status(200).json({
-                msg: "user insert successfully!!!"
-            });
+    fetchAll: (req, res) => {
+        blogmodel.findAll().then((result) => {
+            res.send(result);
         }).catch((err) => {
-            if (err) {
-                res.status(406).json({ error: "insertion failed." });
-            }
+            res.status(400).json({ error: err.message });
         });
     },
-    loginuser: async (req, res) => {
-        let userexistance = await usermodel.findOne({
-            where: {
-                email: req.body.email
-            }
-        })
-        if (userexistance) {
-            const password_valid = bcrypt.compareSync(req.body.password, userexistance.password);
-            if (password_valid) {
-                const user = {
-                    userId: userexistance.userId,
-                    username: userexistance.username,
-                    email: userexistance.email,
-                    password: userexistance.password
-                }
-                const token = jwt.sign(user, process.env.SECRET);
-                return res.status(200)
-                .cookie("jwttoken", token, { httpOnly: true, expires: new Date(Date.now() + (30*60*1000)) })
-                .json({ message: "User login successful." });
-            }
-        }
-        return res.status(401).json({ error: "email or password is incorrect." });
+    fetchparticular: (req, res) => {
+        blogmodel.findAll({ where: { blogId: req.params.blogid } }).then((result) => {
+            res.send(result);
+        }).catch((err) => {
+            res.status(400).json({ error: err.message });
+        });
     },
+    deleteparticular: (req, res) => {
+        blogmodel.destroy({ where: { blogId: req.params.blogid } }).then(() => {
+            res.status(200).json({
+                msg: `${req.params.blogid} deleted successfully.`
+            });
+        }).catch((err) => {
+            res.status(400).json({ error: err.message });
+        });
+    },
+    insert: (req, res) => {
+        const {title, description, publisheddate, author} = req.body;
+        const {path: imagepath} = req.file;
+        // console.log(req.file);
+        blogmodel.create({
+            title,
+            imagepath,
+            publisheddate,
+            author,
+            description
+        }).then(() => {
+            res.status(200).json({
+                msg: 'inserted successfully.'
+            });
+        }).catch((err) => {
+            res.status(400).json({ error: err.message });
+        });
+    },
+    updateparticular: (req, res) => {
+        blogmodel.update({
+            title: req.body.title,
+            imagepath: req.file.path,
+            description: req.body.description,
+            publisheddate: req.body.publisheddate,
+            author: req.body.author
+        },
+        {
+            where: { blogId: req.params.blogid }
+        }).then(() => {
+            res.status(200).json({
+                msg: `${req.params.blogid} updated successfully.`
+            });
+        }).catch((err) => {
+            res.status(400).json({ error: err.message });
+        });
+    }
 }

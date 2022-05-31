@@ -1,4 +1,4 @@
-fetch("/blogs").then((data) => {
+fetch("/users/blogs").then((data) => {
     // console.log(data); json format
     return data.json(); //converted into object
 }).then((objectData) => {
@@ -14,11 +14,19 @@ fetch("/blogs").then((data) => {
         <td>${values.author}</td>
         <td>${values.publisheddate}</td>
         <td>
-            <div>
-                <i class="address-edit fas fa-edit" id="${values.blogId}" aria-hidden="true"></i><i class="address-delete fas fa-trash-alt" id="${values.blogId}" aria-hidden="true"></i>
-            </div>
+            <i class="address-edit fa fa-edit" id="${values.blogId}" aria-hidden="true" onclick="EditBlog(${values.blogId})"></i>&nbsp;<i class="address-delete fa fa-trash" id="${values.blogId}" aria-hidden="true" onclick="deleteBlog(${values.blogId})"></i>
         </td>
     </tr>`;
     });
-    document.getElementById("blog_data").innerHTML = blogTableData;
-})
+    return document.getElementById("blog_data").innerHTML = blogTableData;
+});
+
+const deleteBlog = async (blogId) => {
+    try{ 
+        return await fetch(`/users/delete/${blogId}`, {
+            method: 'DELETE'
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}

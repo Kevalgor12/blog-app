@@ -16,12 +16,12 @@
             <div class="login-header">
                 <h2>Sign Up</h2>
             </div>
-            <form method="POST" action="/users/signupuser">
+            <form method="POST" action="/auth/signupuser" autocomplete="off">
                 <div class="login-fields flex">
                     <input class="input" type="text" name="username" id="username" required
                         placeholder="enter your name.." autocomplete="off">
-                    <input class="input" type="email" name="email" id="email" required placeholder="enter your email.."
-                        autocomplete="off">
+                    <input class="input" type="email" name="email" id="email" for="protected-input" required
+                        placeholder="enter your email.." autocomplete="off">
                     <input class="input" type="text" name="mobile" id="mobile" required
                         placeholder="enter your mobile number.." autocomplete="off">
                     <input class="input" type="password" name="password" id="password" required
@@ -32,7 +32,7 @@
                 </div>
             </form>
             <div class="register">
-                <a class="register-text" href="/users/login">Click here to login</a>
+                <a class="register-text" href="/auth/login">Click here to login</a>
             </div>
         </div>
 
